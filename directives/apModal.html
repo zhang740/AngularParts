@@ -1,0 +1,17 @@
+﻿<div id="{{datamodel.Id}}" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
+    <div class="modal-dialog" ng-class="datamodel.Style">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" data-dismiss="modal" aria-hidden="true" class="close">&times;</button>
+                <h4 id="modal-full-width-label" class="modal-title">{{datamodel.Title}}</h4>
+            </div>
+            <form class="form-horizontal" ng-transclude></form>
+            <div class="modal-footer">
+                <button type="button" ng-class="ec.Style" ng-click="ec.Func()" ng-repeat="ec in datamodel.ExtCMD">
+                    <i ng-class="ec.Icon"></i>&nbsp;{{ec.Name}}
+                </button>
+                <button type="button" data-dismiss="modal" class="btn btn-default">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>

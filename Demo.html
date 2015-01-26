@@ -1,0 +1,255 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <title>AngularParts Demo</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link type="text/css" rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="http://cdn.bootcss.com/font-awesome/4.2.0/css/font-awesome.min.css">
+</head>
+<body ng-app="myApp" ng-controller="myCtrl">
+    <div class="container-fluid">
+        <div class="row col-sm-8">
+            <h2>Table</h2>
+        </div>
+        <div class="row col-sm-8">
+            <aptable datamodel="TableDataModel" />
+        </div>
+        <div class="row col-sm-8">
+            <h2>Modal</h2>
+        </div>
+        <div class="row col-sm-8">
+            <span class="btn btn-info" ng-click="OpenModal()">打开Modal</span>
+        </div>
+    </div>
+
+    <apmodal datamodel="Modal1Model">
+        <h2></h2>
+        <div class="form-body pal">
+            <div class="form-group">
+                <label class="col-md-2 control-label">名称</label>
+                <div class="col-md-8">
+                    <div class="input-icon right">
+                        <input type="text" placeholder="名称" class="form-control" ng-model="Modal1Model.Data.name" required />
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">类型</label>
+                <div class="col-md-8">
+                    <div class="input-icon right">
+                        <input type="text" placeholder="类型" class="form-control" ng-model="Modal1Model.Data.type" required />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </apmodal>
+    <apmodal datamodel="Modal2Model">
+        <h2></h2>
+        <div class="form-body pal">
+            <div class="form-group">
+                <label class="col-md-2 control-label">姓名</label>
+                <div class="col-md-8">
+                    <div class="input-icon right">
+                        <input type="text" placeholder="姓名" class="form-control" ng-model="Modal2Model.Data.name" required />
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">地址</label>
+                <div class="col-md-8">
+                    <div class="input-icon right">
+                        <input type="text" placeholder="地址" class="form-control" ng-model="Modal2Model.Data.address" required />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </apmodal>
+    <apmodal datamodel="Modal3Model">
+        <h2></h2>
+        <div class="form-body pal">
+            <div class="form-group">
+                <label class="col-md-2 control-label">电话</label>
+                <div class="col-md-8">
+                    <div class="input-icon right">
+                        <input type="text" placeholder="电话" class="form-control" ng-model="Modal1Model.Data.tel" required />
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">邮箱</label>
+                <div class="col-md-8">
+                    <div class="input-icon right">
+                        <input type="text" placeholder="邮箱" class="form-control" ng-model="Modal1Model.Data.email" required />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </apmodal>
+
+    <script src="http://cdn.bootcss.com/jquery/2.1.3/jquery.min.js"></script>
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    <script src="http://cdn.bootcss.com/angular.js/1.3.8/angular.min.js"></script>
+    <script src="directives/apInit.js"></script>
+    <script src="directives/apModal.js"></script>
+    <script src="directives/apTable.js"></script>
+    <script type="text/javascript">
+        var app = angular.module("myApp", ["ap.directives"]);
+        app.controller("myCtrl", function ($scope) {
+            $scope.TableDataModel = {
+                Extend: {
+                    ReInit: function () { },
+                    Clear: function () { },
+                    Refresh: function () { }
+                },
+                Token: "",
+                ApiUrl: "demo.json",
+                Enable: true,
+                IsAutoLoad: true,
+                OrderBy: "N/A",
+                ColumnDefs: [
+                {
+                    width: '20%',
+                    field: 'field1',
+                    displayName: '公司',
+                    dataType: '',
+                    filterType: 'Select',
+                    filterKey: 'field1 eq %Value%',
+                    filterParam: [
+                    {
+                        Name: '腾讯',
+                        Key: '腾讯'
+                    },
+                    {
+                        Name: '百度',
+                        Key: '百度'
+                    },
+                    {
+                        Name: '阿里',
+                        Key: '阿里'
+                    }]
+                },
+                {
+                    width: '20%',
+                    field: 'field2',
+                    displayName: '位置',
+                    dataType: ''
+                },
+                {
+                    width: '20%',
+                    field: 'field3',
+                    displayName: '职位',
+                    dataType: '',
+                    filterType: 'Text',
+                    filterKey: 'field3 eq %Value%',
+                    filterParam: [
+                    {
+                        Name: '',
+                        Key: ''
+                    }]
+                }],
+                ExtCMD: [
+                {
+                    Icon: "fa fa-star",
+                    Style: "btn btn-success",
+                    Name: "关注",
+                    Func: function (data) { }
+                },
+                {
+                    Icon: "fa fa-share",
+                    Style: "btn btn-warning",
+                    Name: "分享",
+                    Func: function (data) { }
+                },
+                {
+                    Icon: "fa fa-question-circle",
+                    Style: "btn btn-info",
+                    Name: "咨询",
+                    Func: function (data) { }
+                },
+                {
+                    Icon: "fa fa-print",
+                    Style: "btn btn-info",
+                    Name: "打印",
+                    Func: function (data) { }
+                }],
+                ECDisplayLength: 3,
+                OnDataLoaded: function (data) { },
+            };
+
+            var MultiLayoutManager = {};
+            $scope.OpenModal = function () {
+                $scope.Modal1Model.Extend.Toggle();
+            };
+            $scope.Modal1Model = {
+                Extend: {
+                    Toggle: function () { },
+                    Show: function () { },
+                    Hide: function () { }
+                },
+                Id: "Modal1Model",
+                Title: "第一层弹窗",
+                Style: "",
+                MultiLayoutManaged: MultiLayoutManager,
+                ExtCMD: [
+                {
+                    Icon: "fa fa-flag",
+                    Style: "btn btn-success",
+                    Name: "打开第二层",
+                    Func: function (data) { $scope.Modal2Model.Extend.Toggle(); }
+                },
+                {
+                    Icon: "fa fa-cog",
+                    Style: "btn btn-info",
+                    Name: "扩展命令1",
+                    Func: function (data) { alert("扩展命令1"); }
+                }]
+            };
+            $scope.Modal2Model = {
+                Extend: {
+                    Toggle: function () { },
+                    Show: function () { },
+                    Hide: function () { }
+                },
+                Id: "Modal2Model",
+                Title: "第二层弹窗",
+                Style: "",
+                MultiLayoutManaged: MultiLayoutManager,
+                ExtCMD: [
+                {
+                    Icon: "fa fa-flag",
+                    Style: "btn btn-success",
+                    Name: "打开第三层",
+                    Func: function (data) { $scope.Modal3Model.Extend.Toggle(); }
+                },
+                {
+                    Icon: "fa fa-cog",
+                    Style: "btn btn-info",
+                    Name: "扩展命令2",
+                    Func: function (data) { alert("扩展命令2"); }
+                }]
+            };
+            $scope.Modal3Model = {
+                Extend: {
+                    Toggle: function () { },
+                    Show: function () { },
+                    Hide: function () { }
+                },
+                Id: "Modal3Model",
+                Title: "第三层弹窗",
+                Style: "",
+                MultiLayoutManaged: MultiLayoutManager,
+                ExtCMD: [
+                {
+                    Icon: "fa fa-cog",
+                    Style: "btn btn-info",
+                    Name: "扩展命令3",
+                    Func: function (data) { alert("扩展命令3"); }
+                }]
+            };
+        });
+    </script>
+</body>
+</html>

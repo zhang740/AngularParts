@@ -1,0 +1,1 @@
+Aparts = angular.module('ap.directives', []);

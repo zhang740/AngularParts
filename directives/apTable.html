@@ -1,0 +1,107 @@
+﻿<div class="portlet-body">
+    <div ng-show="Filters.length>0 && datamodel.Enable" style="margin-bottom:20px">
+        <span ng-repeat="fi in Filters" style="margin-right:10px">
+            {{fi.Name}}：
+            <span ng-switch="fi.Type">
+                <span ng-switch-when="Select">
+                    <select ng-model="fi.Value">
+                        <option value="">全部</option>
+                        <option value="{{fp.Key}}" ng-repeat="fp in fi.Param">{{fp.Name}}</option>
+                    </select>
+                </span>
+                <span ng-switch-default>
+                    <input ng-model="fi.Value" />
+                </span>
+            </span>
+        </span>
+        <span>
+            <a ng-click="Search()" class="btn btn-sm btn-default btn-info">
+                搜索
+            </a>
+        </span>
+    </div>
+    <table class="table table-hover table-striped table-bordered table-advanced tablesorter">
+        <thead>
+            <tr>
+                <th width="{{cl.width}}" ng-repeat="cl in datamodel.ColumnDefs" ng-style="cl.style">{{cl.displayName}}</th>
+                <th ng-show="datamodel.ExtCMD.length>0"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="model in data">
+                <td ng-repeat="cl in datamodel.ColumnDefs">
+                    <span ng-switch="cl.dataType">
+                        <span ng-switch-when="DateTime" ng-style="cl.style">{{model[cl.field]|date:'yyyy年MM月dd日 HH:mm:ss'}}</span>
+                        <span ng-switch-default ng-style="cl.style">{{model[cl.field]}}</span>
+                    </span>
+                </td>
+                <td ng-show="datamodel.ExtCMD.length>0">
+                    <span ng-repeat="ec in datamodel.ExtCMD" has-permission="{{ec.Permission}}">
+                        <button type="button" ng-class="ec.Style" ng-click="ec.Func(model)">
+                            <i ng-class="ec.Icon" ng-show="ec.Icon">&nbsp;</i>
+                            {{ec.Name}}
+                        </button>
+                        &nbsp;
+                    </span>
+
+                    <div class="btn-group" ng-show="datamodel.ExtCMDExt">
+                        <button type="button" data-toggle="dropdown" class="btn btn-info mbs dropdown-toggle">
+                            <i class="fa fa-ellipsis-h">&nbsp;</i>
+                            更多&nbsp;<span class="caret"></span>
+                        </button>
+                        <ul role="menu" class="dropdown-menu" style="min-width: 100px;">
+                            <li ng-repeat="ec in datamodel.ExtCMDExt" ng-click="ec.Func(model)">
+                                <a href="#">
+                                    <i ng-class="ec.Icon" ng-show="ec.Icon">&nbsp;</i>
+                                    {{ec.Name}}
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                </td>
+            </tr>
+            <tr ng-show="data && data.length<1">
+                <td colspan="{{datamodel.ColumnDefs.length+2}}">
+                    <div style="text-align: center;">暂无数据</div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="row mbm" ng-hide="datamodel.PageToolbarMode=='None' ||  !datamodel.Enable">
+        <div class="col-lg-12">
+            <span ng-click="Page.firstPage()" class="btn btn-sm btn-default btn-prev gw-prev">
+                首页
+            </span>
+            &nbsp;
+            <span ng-click="Page.prePage()" ng-disabled="Page.currentIndex <= 0" class="btn btn-sm btn-default btn-prev gw-prev">
+                前一页
+            </span>
+            &nbsp;
+            <span>
+                <input type="text" maxlenght="5" value="{{Page.currentIndex + 1}}" ng-readonly="true" style="max-width:45px;display:inline-block;" class="pagination-panel-input form-control input-mini input-inline input-sm text-center gw-page" />
+            </span>
+            &nbsp;
+            <span ng-click="Page.nextPage()" ng-disabled="data.length < Page.pageSize" class="btn btn-sm btn-default btn-prev gw-next">
+                后一页
+            </span>
+
+            <span ng-show="datamodel.PageToolbarMode=='Full'">
+                &nbsp;
+                <!--共1页--> | 每页显示
+                &nbsp;
+                <select class="form-control input-xsmall input-sm input-inline gw-pageSize" ng-model="Page.pageSize" style="max-width:80px;display:inline-block;" ng-change="pageCfgChanged()">
+                    <option ng-repeat="page in PageInfo">{{page.pageSize}}</option>
+                </select>
+                &nbsp;
+                条记录 | 当前页有 {{data.length}} 条记录
+            </span>
+            <span style="float: right">
+                <button type="button" class="btn btn-info" ng-click="Refresh()">
+                    <i class="fa fa-refresh"></i>&nbsp;
+                    刷新
+                </button>
+            </span>
+        </div>
+    </div>
+</div>
