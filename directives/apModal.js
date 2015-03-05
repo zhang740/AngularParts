@@ -33,66 +33,67 @@ Aparts
             //    OnHidden: function (data) { },
             //};
 
-            if ($scope.datamodel) {
-                if ($scope.datamodel.MultiLayoutManaged) {
-                    if (!$scope.datamodel.MultiLayoutManaged.isInited) {
-                        $scope.datamodel.MultiLayoutManaged.isInited = true;
-                        $scope.datamodel.MultiLayoutManaged.CurrentLayout = null;
-                        $scope.datamodel.MultiLayoutManaged.Layouts = [];
+            var datamodel = $scope.datamodel;
+            if (datamodel) {
+                if (datamodel.MultiLayoutManaged) {
+                    if (!datamodel.MultiLayoutManaged.isInited) {
+                        datamodel.MultiLayoutManaged.isInited = true;
+                        datamodel.MultiLayoutManaged.CurrentLayout = null;
+                        datamodel.MultiLayoutManaged.Layouts = [];
                     }
                 }
 
                 var isInited = false;
                 var Init = function () {
                     isInited = true;
-                    $('#' + $scope.datamodel.Id).on('show.bs.modal', function () {
-                        if ($scope.datamodel.OnShow) $scope.datamodel.OnShow();
-                        if ($scope.datamodel.MultiLayoutManaged) {
-                            if ($scope.datamodel.MultiLayoutManaged.CurrentLayout != $scope.datamodel.Id) {
-                                $scope.datamodel.MultiLayoutManaged.CurrentLayout = $scope.datamodel.Id;
-                                if ($scope.datamodel.MultiLayoutManaged.Layouts.length > 0) {
-                                    $('#' + $scope.datamodel.MultiLayoutManaged.Layouts.slice(-1)).modal('hide');
+                    $('#' + datamodel.Id).on('show.bs.modal', function () {
+                        if (datamodel.OnShow) datamodel.OnShow();
+                        if (datamodel.MultiLayoutManaged) {
+                            if (datamodel.MultiLayoutManaged.CurrentLayout != datamodel.Id) {
+                                datamodel.MultiLayoutManaged.CurrentLayout = datamodel.Id;
+                                if (datamodel.MultiLayoutManaged.Layouts.length > 0) {
+                                    $('#' + datamodel.MultiLayoutManaged.Layouts.slice(-1)).modal('hide');
                                 }
-                                $scope.datamodel.MultiLayoutManaged.Layouts.push($scope.datamodel.Id);
+                                datamodel.MultiLayoutManaged.Layouts.push(datamodel.Id);
                             }
                         }
                     });
-                    $('#' + $scope.datamodel.Id).on('shown.bs.modal', function () {
-                        if ($scope.datamodel.OnShown) $scope.datamodel.OnShown();
+                    $('#' + datamodel.Id).on('shown.bs.modal', function () {
+                        if (datamodel.OnShown) datamodel.OnShown();
                     });
-                    $('#' + $scope.datamodel.Id).on('hide.bs.modal', function () {
-                        if ($scope.datamodel.OnHide) $scope.datamodel.OnHide();
-                        if ($scope.datamodel.MultiLayoutManaged) {
-                            if ($scope.datamodel.MultiLayoutManaged.CurrentLayout == $scope.datamodel.Id) {
-                                $scope.datamodel.MultiLayoutManaged.Layouts.pop($scope.datamodel.Id);
-                                if ($scope.datamodel.MultiLayoutManaged.Layouts.length > 0) {
-                                    $scope.datamodel.MultiLayoutManaged.CurrentLayout = $scope.datamodel.MultiLayoutManaged.Layouts.slice(-1);
-                                    $('#' + $scope.datamodel.MultiLayoutManaged.Layouts.slice(-1)).modal('show');
+                    $('#' + datamodel.Id).on('hide.bs.modal', function () {
+                        if (datamodel.OnHide) datamodel.OnHide();
+                        if (datamodel.MultiLayoutManaged) {
+                            if (datamodel.MultiLayoutManaged.CurrentLayout == datamodel.Id) {
+                                datamodel.MultiLayoutManaged.Layouts.pop(datamodel.Id);
+                                if (datamodel.MultiLayoutManaged.Layouts.length > 0) {
+                                    datamodel.MultiLayoutManaged.CurrentLayout = datamodel.MultiLayoutManaged.Layouts.slice(-1);
+                                    $('#' + datamodel.MultiLayoutManaged.Layouts.slice(-1)).modal('show');
                                 } else {
-                                    $scope.datamodel.MultiLayoutManaged.CurrentLayout = null;
+                                    datamodel.MultiLayoutManaged.CurrentLayout = null;
                                 }
                             }
                         }
                     });
-                    $('#' + $scope.datamodel.Id).on('hidden.bs.modal', function () {
-                        if ($scope.datamodel.OnHidden) $scope.datamodel.OnHidden();
+                    $('#' + datamodel.Id).on('hidden.bs.modal', function () {
+                        if (datamodel.OnHidden) datamodel.OnHidden();
                     });
 
-                    if ($scope.datamodel.OnInit) $scope.datamodel.OnInit();
+                    if (datamodel.OnInit) datamodel.OnInit();
                 };
 
-                $scope.datamodel.Extend = {
+                datamodel.Extend = {
                     Toggle: function () {
                         if (!isInited) Init();
-                        $('#' + $scope.datamodel.Id).modal('toggle');
+                        $('#' + datamodel.Id).modal('toggle');
                     },
                     Show: function () {
                         if (!isInited) Init();
-                        $('#' + $scope.datamodel.Id).modal('show');
+                        $('#' + datamodel.Id).modal('show');
                     },
                     Hide: function () {
                         if (!isInited) Init();
-                        $('#' + $scope.datamodel.Id).modal('hide');
+                        $('#' + datamodel.Id).modal('hide');
                     }
                 };
             }

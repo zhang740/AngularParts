@@ -50,13 +50,12 @@ Aparts
             //};
 
             $scope.Init = function () {
-
+                var datamodel = $scope.datamodel;
                 $scope.data = [];
-
                 $scope.Filters = [];
 
-                if ($scope.datamodel) {
-                    $scope.datamodel.Extend = {
+                if (datamodel) {
+                    datamodel.Extend = {
                         ReInit: function () {
                             $scope.Init();
                         },
@@ -99,18 +98,20 @@ Aparts
                         $scope.Refresh();
                     };
 
-                    if ($scope.datamodel.Enable != false) $scope.datamodel.Enable = true;
-                    if ($scope.datamodel.DefaultFilter) {
-                        for (var l = 0; l < $scope.datamodel.DefaultFilter.length; l++) {
+                    if (datamodel.Enable != false) datamodel.Enable = true;
+                    var keys = datamodel.DefaultFilter;
+                    if (keys) {
+                        for (var l = 0, length = keys.length; l < length; l++) {
                             $scope.Filters.push({
-                                Key: $scope.datamodel.DefaultFilter[l],
+                                Key: keys[l],
                                 Value: ""
                             });
                         }
                     }
 
-                    for (var k = 0; k < $scope.datamodel.ColumnDefs.length; k++) {
-                        var col = $scope.datamodel.ColumnDefs[k];
+                    var cols = datamodel.ColumnDefs;
+                    for (var k = 0, length = cols.length; k < length ; k++) {
+                        var col = cols[k];
                         if (col.filterType) {
                             switch (col.filterType) {
                                 case "Text":
@@ -136,7 +137,7 @@ Aparts
                     }
 
                     $scope.Refresh = function () {
-                        var desurl = $scope.datamodel.ApiUrl;
+                        var desurl = datamodel.ApiUrl;
                         if (-1 == desurl.indexOf('?')) {
                             desurl = desurl + "?";
                         } else {
@@ -146,8 +147,8 @@ Aparts
                         if ($scope.Page.currentIndex > 0) {
                             desurl = desurl + "&$skip=" + $scope.Page.currentIndex * $scope.Page.pageSize;
                         }
-                        if ($scope.datamodel.OrderBy) {
-                            if ($scope.datamodel.OrderBy != "N/A") desurl = desurl + "&$orderby=" + $scope.datamodel.OrderBy;
+                        if (datamodel.OrderBy) {
+                            if (datamodel.OrderBy != "N/A") desurl = desurl + "&$orderby=" + datamodel.OrderBy;
                         } else {
                             desurl = desurl + "&$orderby=Id";
                         }
@@ -170,12 +171,12 @@ Aparts
                             dataType: 'json',
                             url: desurl,
                             headers: {
-                                "Authorization": "Bearer " + $scope.datamodel.Token
+                                "Authorization": "Bearer " + datamodel.Token
                             }
                         }).
                         success(function (data) {
                             $scope.data = data;
-                            if ($scope.datamodel.OnDataLoaded) $scope.datamodel.OnDataLoaded(data);
+                            if (datamodel.OnDataLoaded) datamodel.OnDataLoaded(data);
                         }).
                         error(function (data) { });
                     };
@@ -183,30 +184,30 @@ Aparts
                         $scope.Page.firstPage();
                     };
 
-                    if ($scope.datamodel.IsAutoLoad != false && $scope.datamodel.ApiUrl && $scope.datamodel.ApiUrl != "") $scope.Refresh();
-                    if (!$scope.datamodel.PageToolbarMode) $scope.datamodel.PageToolbarMode = "Full";
-                    else if ($scope.datamodel.PageToolbarMode == "None") {
+                    if (datamodel.IsAutoLoad != false && datamodel.ApiUrl && datamodel.ApiUrl != "") $scope.Refresh();
+                    if (!datamodel.PageToolbarMode) datamodel.PageToolbarMode = "Full";
+                    else if (datamodel.PageToolbarMode == "None") {
                         $scope.Page.pageSize = 50;
                     }
 
-                    delete $scope.datamodel.ExtCMDExt;
-                    if ($scope.datamodel.ExtCMD) {
+                    delete datamodel.ExtCMDExt;
+                    if (datamodel.ExtCMD) {
                         var delIndexs = [];
                         //可以整合权限
-                        //for (var i = 0; i < $scope.datamodel.ExtCMD.length; i++) {
-                        //    if ($scope.datamodel.ExtCMD[i].Permission) {
-                        //        if (!permissions.hasPermission($scope.datamodel.ExtCMD[i].Permission)) {
+                        //for (var i = 0; i < datamodel.ExtCMD.length; i++) {
+                        //    if (datamodel.ExtCMD[i].Permission) {
+                        //        if (!permissions.hasPermission(datamodel.ExtCMD[i].Permission)) {
                         //            delIndexs.push(i);
                         //        }
                         //    }
                         //}
-                        for (var i = 0; i < delIndexs.length; i++) {
-                            $scope.datamodel.ExtCMD.splice(delIndexs[i], 1);
+                        for (var i = 0, length = delIndexs.length; i < length; i++) {
+                            datamodel.ExtCMD.splice(delIndexs[i], 1);
                         }
-                        if (!$scope.datamodel.ECDisplayLength) $scope.datamodel.ECDisplayLength = 3;
-                        if ($scope.datamodel.ExtCMD.length > $scope.datamodel.ECDisplayLength) {
-                            $scope.datamodel.ExtCMDExt = $scope.datamodel.ExtCMD.slice($scope.datamodel.ECDisplayLength - 1);
-                            $scope.datamodel.ExtCMD.splice($scope.datamodel.ECDisplayLength - 1);
+                        if (!datamodel.ECDisplayLength) datamodel.ECDisplayLength = 3;
+                        if (datamodel.ExtCMD.length > datamodel.ECDisplayLength) {
+                            datamodel.ExtCMDExt = datamodel.ExtCMD.slice(datamodel.ECDisplayLength - 1);
+                            datamodel.ExtCMD.splice(datamodel.ECDisplayLength - 1);
                         }
                     }
                 }
